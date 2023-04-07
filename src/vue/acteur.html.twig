@@ -22,20 +22,27 @@
 </form>
 </div>
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
+{% if acteur|length != 0%}
 {% for a in acteur %}
 <div class="card" style="max-width: 20rem;">
   <img src="https://image.tmdb.org/t/p/w500/{{a.profile_path}}" class="card-img-top" alt="Un très bon acteur">
   <div class="card-body text-center">
-    <h5 class="card-title">{{a.name}}</h5>
-    
+    <h5 class="card-title fs-2">{{a.name}}</h5>
     <p class="card-text text-primary fs-2">Connu(e) pour : </p>
     <ul>
     {% for k in a.known_for %}
         <li>{{k.title}}</li>
     {% endfor %}
     </ul>
+    <a href="#">En savoir plus ></a>
   </div>
 </div>
 {% endfor %}
+
+{% else %}
+<div class="jumbotron jumbotron-fluid text-center m-5">
+  <h1>{{error}}. . .</h1>
+</div> 
+{% endif %}
 </div>
 {% endblock %}

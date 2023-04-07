@@ -16,9 +16,52 @@
 <div class="form-group">
       <label for="inputTitle" class="form-label mt-4">Titre :</label>
       <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Entrer le nom d'un film">
-    </div>
+    </div>    
     <button type="submit" class="btn btn-primary mt-4" name="Recherche">Recherche</button>
     </fieldset>  
+</form>
+</div>
+{% if films|length != 0%}
+<div class="container mb-5">
+<form action="index.php?page=film" method="post">
+<h3>Trier par :</h3>
+<div class="form-group d-flex gap-3">
+    
+    <fieldset>
+    <legend>Note :</legend>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="note" id="asc" value="asc" >
+      <label class="form-check-label" for="option1">Le moins bien noté</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="note" id="desc" value="desc">
+      <label class="form-check-label" for="option2">Le mieux noté</label>
+    </div>
+    </fieldset>
+    <fieldset>
+    <legend>Date de sortie :</legend>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="sortie" id="asc" value="asc" >
+      <label class="form-check-label" for="option1">Le plus ancient</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="sortie" id="desc" value="desc">
+      <label class="form-check-label" for="option2">Le plus récent</label>
+    </div>
+    </fieldset>
+    <fieldset>
+    <legend>Popularité :</legend>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="popularite" id="asc" value="asc" >
+      <label class="form-check-label" for="option1">Le moins populaire</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="popularite" id="desc" value="desc">
+      <label class="form-check-label" for="option2">Le plus populaire</label>
+    </div>
+    </fieldset>
+</div>
+<button type="submit" class="btn btn-primary mt-4" name="Trie">Trier</button>
 </form>
 </div>
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
@@ -26,8 +69,9 @@
 <div class="card" style="max-width: 20rem;">
   <img src="https://image.tmdb.org/t/p/w500/{{f.poster_path}}" class="card-img-top" alt="Un très bon film">
   <div class="card-body text-center">
-    <h5 class="card-title">{{f.title}}</h5>
+    <h5 class="card-title fs-2">{{f.title}}</h5>
     <p class="card-text">{{f.overview}}</p>
+    <p class="card-text">Date de sortie : {{f.release_date|date("d/m/Y")}}</p>
     {% if f.vote_average < 3  %}
       <p class="card-text text-white border rounded bg-danger border-danger fs-2">Note : {{f.vote_average}}</p>
     {% elseif f.vote_average > 6 %}
@@ -35,10 +79,14 @@
     {% else %}
       <p class="card-text text-white border rounded bg-warning border-warning fs-2">Note : {{f.vote_average}}</p>
     {% endif %}
-
-    
+    <a href="#">En savoir plus ></a>
   </div>
 </div>
 {% endfor %}
+{% else %}
+<div class="jumbotron jumbotron-fluid text-center m-5">
+  <h1>{{error}}. . .</h1>
+</div> 
+{% endif %}
 </div>
 {% endblock %}

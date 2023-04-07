@@ -6,6 +6,7 @@ function getPage()
     $lesPages['film'] = "filmController";
     $lesPages['show'] = "showController";
     $lesPages['acteur'] = "acteurController";
+    $lesPages['detailFilm'] = "detailFilmController";
 
     // on peut aussi utiliser $_SERVER['REQUEST_URI'] pour cette partie
     if (isset($_GET['page'])) {

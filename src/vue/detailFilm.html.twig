@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Detail
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid text-center m-5 bg-light ">
+  <h1>Détail du film</h1>
+</div>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12 mx-auto text-center border border-primary p-3">
+        <h1>{{ detail.21 }}</h1>
+        <h3>{{detail.20}}</h3>
+        <h4>Date de Sortie : {{ detail.release_date|date("d/m/Y") }} </h4>
+      
+  <hr class="my-4"> 
+        
+        <p><h4>Genres :</h4>
+        {% for genre in detail.4 %}
+          {{ genre['name'] }}{% if not loop.last %}, {% endif %}
+        {% endfor %}</p>
+
+      
+        <h4>Sociétés de production :</h4>
+        <div class="container d-flex flex-column gap-3 bg-light mt-2">
+        {% for company in detail.13 %}
+        <div class="container d-flex align-items-center justify-content-center gap-5">
+        <img src="https://image.tmdb.org/t/p/w200/{{company['logo_path']}}" alt="">
+            <p>
+              {{ company['name'] }}{% if not loop.last %}, {% endif %} 
+            </p>
+            
+        </div>
+        {% endfor %}
+  </div>
+        
+        <p><h4>Note :</h4> {{ detail.23 }} / 10 </p>
+<hr class="my-4"> 
+        <div class="container ">
+        <h2>Synopsys :</h2>
+        <p class="fs-3">{{detail.10}}</p>
+        </div>
+      </div>
+       <div class="col-lg-6 col-md-6 col-sm-12 mx-auto">
+        <img src="https://image.tmdb.org/t/p/original/{{ detail.1 }}" alt="{{ detail.title }}" class="img-fluid">
+
+        <div class="container mt-5 border border-primary">
+        <div class="container d-flex">
+        <h4>Langues :</h4>
+        {% for langue in detail.18 %}
+        <p class="mx-3">
+          {{ langue['name'] }}{% if not loop.last %}, {% endif %}
+        </p>
+        {% endfor %}
+        </div>
+        <div class="container d-flex">
+        <h4>Temps :</h4>
+        <p class="mx-3">{{ (detail.17 / 60) | number_format(2, '.', ',') }} Heures</p>
+
+        </div>
+        <div class="container d-flex">
+        <h4>Site :</h4>
+        <a href='{{detail.5}}' target="_blank" class="mx-3">{{detail.5}}</a>
+        </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
