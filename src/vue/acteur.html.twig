@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Recherche - Acteur
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid text-center m-5">
+  <h1>Vous recherchez un acteur ?</h1>
+  <p class="lead">Formulaire pour rechercher des Acteurs par nom</p>
+  <hr class="my-4"> 
+</div>
+<div class="container mb-5">
+<form action="index.php?page=acteur" method="post">
+<fieldset>
+<div class="form-group">
+      <label for="inputTitle" class="form-label mt-4">Nom :</label>
+      <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Entrer le nom d'un acteur">
+    </div>
+    <button type="submit" class="btn btn-primary mt-4" name="Recherche">Recherche</button>
+    </fieldset>  
+</form>
+</div>
+<div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
+{% for a in acteur %}
+<div class="card" style="max-width: 20rem;">
+  <img src="https://image.tmdb.org/t/p/w500/{{a.profile_path}}" class="card-img-top" alt="Un très bon acteur">
+  <div class="card-body text-center">
+    <h5 class="card-title">{{a.name}}</h5>
+    
+    <p class="card-text text-primary fs-2">Connu(e) pour : </p>
+    <ul>
+    {% for k in a.known_for %}
+        <li>{{k.title}}</li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}
