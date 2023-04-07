@@ -5,33 +5,32 @@
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid text-center m-5 bg-light ">
-  <h1>Détail du Show</h1>
+<div class="mb-2 container-fluid d-flex align-items-center justify-content-center" style="background-image: url('https://image.tmdb.org/t/p/original/{{ detail.backdrop_path }}'); background-position: top; background-repeat: no-repeat; background-size:cover; height: 600px;">
 </div>
 <div class="container-fluid">
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-12 mx-auto text-center border border-primary p-3">
-        <h1>{{ detail.12 }}</h1>
+        <h1>{{ detail.name }}</h1>
         <div class="container d-flex align-items-center justify-content-center gap-2 flex-wrap my-3">
         <h3>Écrit par :</h3>
-        {% for e in detail.2 %}
+        {% for e in detail.created_by %}
         <h3>{{e['name']}}</h3>
         <img src="https://image.tmdb.org/t/p/original/{{e['profile_path']}}" alt="créateur" class="rounded " width="100">
         {% endfor %}
         </div>
-        <h4>Date de Diffusion : {{ detail.4|date("d/m/Y")  }}</h4>
+        <h4>Date de Diffusion : {{ detail.first_air_date|date("d/m/Y")  }}</h4>
       
   <hr class="my-4"> 
         
         <p><h4>Genres :</h4>
-        {% for genre in detail.5 %}
+        {% for genre in detail.genres %}
           {{ genre['name'] }}{% if not loop.last %}, {% endif %}
         {% endfor %}</p>
 
       
         <h4>Sociétés de production :</h4>
         <div class="container d-flex flex-column gap-3 bg-light mt-2">
-        {% for company in detail.23 %}
+        {% for company in detail.production_companies %}
         <div class="container d-flex align-items-center justify-content-center gap-5">
         <img src="https://image.tmdb.org/t/p/w200/{{company['logo_path']}}" alt="">
             <p>
@@ -42,20 +41,24 @@
         {% endfor %}
   </div>
         
-        <p><h4>Note :</h4> {{ detail.30 }} / 10 </p>
+        <p><h4>Note :</h4> {{ detail.vote_average }} / 10 </p>
 <hr class="my-4"> 
         <div class="container ">
         <h2>Synopsys :</h2>
-        <p class="fs-3">{{detail.20}}</p>
+        <p class="fs-3">{{detail.overview}}</p>
         </div>
       </div>
        <div class="col-lg-6 col-md-6 col-sm-12 mx-auto">
-        <img src="https://image.tmdb.org/t/p/original/{{ detail.1 }}" alt="{{ detail.title }}" class="img-fluid">
+          {% if err is not null %}
+          <iframe width="100%" height="500px" src="https://www.youtube.com/embed/{{video}}" frameborder="0" allowfullscreen class="shadow-lg"></iframe>
+          {% else %} 
+          <img src="https://image.tmdb.org/t/p/original/{{ detail.backdrop_path }}" alt="{{ detail.title }}" class="img-fluid">
+          {% endif %}
 
         <div class="container mt-5 border border-primary">
         <div class="container d-flex">
         <h4>Le show est fini :</h4>
-        {% if detail.8 %}
+        {% if detail.in_production %}
           <p class="mx-3">Oui</p>
         {% else %}
         <p class="mx-3">Non</p>
@@ -63,12 +66,12 @@
         </div>
         <div class="container d-flex">
         <h4>Dernier épisode :</h4>
-        <p class="mx-3">Saison : {{detail.11['season_number']}} Épisode : {{detail.11['episode_number']}} - {{detail.11['name']}} ( {{detail.11['air_date']}} )</p>
+        <p class="mx-3">Saison : {{detail.last_episode_to_air['season_number']}} Épisode : {{detail.last_episode_to_air['episode_number']}} - {{detail.last_episode_to_air['name']}} ( {{detail.last_episode_to_air['air_date']}} )</p>
         </div>
         <div class="container my-3">
         <h4>Saisons :</h4>
         <div class="container d-flex justify-content-center align-items-baseline flex-wrap gap-3 ">
-        {% for s in detail.25 %}
+        {% for s in detail.seasons %}
         <div class="card" style="width: 8rem;">
         <img class="card-img-top" src="https://image.tmdb.org/t/p/w200/{{s['poster_path']}}" alt="Card image cap">
           <div class="card-body">
@@ -82,7 +85,7 @@
          <div class="container d-flex">
         <div class="container d-flex">
         <h4>Langues :</h4>
-        {% for langue in detail.26 %}
+        {% for langue in detail.spoken_languages %}
         <p class="mx-3">
           {{ langue['name'] }}{% if not loop.last %}, {% endif %}
         </p>
@@ -91,7 +94,7 @@
         
         <div class="container d-flex">
         <h4>Site :</h4>
-        <a href="{{detail.6}}" target="_blank" class="mx-3"> {{detail.6}}</a>
+        <a href="{{detail.homepage}}" target="_blank" class="mx-3"> {{detail.homepage}}</a>
         </div>
 
       </div>

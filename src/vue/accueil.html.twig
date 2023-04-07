@@ -7,7 +7,7 @@
 {% block body %}
 <div class="jumbotron jumbotron-fluid text-center m-5">
   <h1>Bienvenue sur Lemon</h1>
-  <p class="lead">Vous pouvez ici cherche tout les films que vous souhaitez</p>
+  <p class="lead">Vous pouvez ici chercher tout les films que vous souhaitez</p>
   <hr class="my-4">
   <a class="btn btn-primary btn-lg active" href="?page=film">Rechercher un film</a>  
   <h1 class="mt-5">Le Top du moment :</h1>
@@ -16,11 +16,11 @@
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
 
 {% for f in films %}
-<div class="card" style="max-width: 20rem;">
+<div class="card shadow card-hover" style="max-width: 20rem;">
   <img src="https://image.tmdb.org/t/p/w500/{{f.poster_path}}" class="card-img-top" alt="Un très bon film">
   <div class="card-body text-center">
     <h5 class="card-title fs-2">{{f.title}}</h5>
-    <p class="card-text">{{f.overview}}</p>
+    <p class="card-text text150">{{f.overview}}</p>
     <p class="card-text">Date de sortie : {{f.release_date|date("d/m/Y")}}</p>
     {% if f.vote_average < 3  %}
       <p class="card-text text-white border rounded bg-danger border-danger fs-2">Note : {{f.vote_average}}</p>

@@ -288,53 +288,63 @@ function acteurController($twig, $db)
 
 function detailFilmController($twig, $db)
 {
-    $dtl = [];
+
     $err = "";
     if (isset($_GET["id"])) {
         $id = $_GET['id'];
         $req = $db['SEARCH_DETAIL_FILM'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
-
+        $reqV = $db['SEARCH_DETAIL_FILM'] . '/' . $id . '/videos' . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
         $client = new GuzzleHttp\Client();
         $res = $client->request('GET', $req, [
             'verify' => false,
         ]);
+        $resV = $client->request('GET', $reqV, [
+            'verify' => false,
+        ]);
 
         $json = json_decode($res->getBody()->getContents(), true);
+        $jsonV = json_decode($resV->getBody()->getContents(), true);
 
-        if ($json['original_title'] == null) {
+        if (isset($json['status_code']) && $json['status_code'] == 34) {
             $err = "404 Unfound";
-        } else {
-            foreach ($json as $d) {
-                array_push($dtl, $d);
-            }
+        }
+
+        if (isset($jsonV['status_code']) && $jsonV['status_code'] == 34) {
+            $err = "404 Unfound";
         }
     }
-    echo $twig->render('detailFilm.html.twig', ['detail' => $dtl, 'err' => $err]);
+
+
+    echo $twig->render('detailFilm.html.twig', ['detail' => $json, 'err' => $err, 'video' => $jsonV['results'][0]['key']]);
 }
 
 function detailShowController($twig, $db)
 {
-    $dtl = [];
+
     $err = "";
     if (isset($_GET["id"])) {
         $id = $_GET['id'];
         $req = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
+        $reqV = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '/videos' . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
 
         $client = new GuzzleHttp\Client();
         $res = $client->request('GET', $req, [
             'verify' => false,
         ]);
+        $resV = $client->request('GET', $reqV, [
+            'verify' => false,
+        ]);
+
 
         $json = json_decode($res->getBody()->getContents(), true);
+        $jsonV = json_decode($resV->getBody()->getContents(), true);
 
-        if ($json['original_name'] == null) {
+        if (isset($json['status_code']) && $json['status_code'] == 34) {
             $err = "404 Unfound";
-        } else {
-            foreach ($json as $d) {
-                array_push($dtl, $d);
-            }
+        }
+        if (isset($jsonV['status_code']) && $jsonV['status_code'] == 34) {
+            $err = "404 Unfound";
         }
     }
-
-    echo $twig->render('detailShow.html.twig', ['detail' => $dtl, 'err' => $err]);
+    echo $twig->render('detailShow.html.twig', ['detail' => $json, 'err' => $err, 'video' => $jsonV['results'][0]['key']]);
 }
