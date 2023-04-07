@@ -28,10 +28,19 @@ function accueilController($twig, $db)
 
 function filmController($twig, $db)
 {
+    $fichierLog = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'data.log';
+
     $films = [];
     $err = "";
     if (isset($_POST['Recherche'])) {
         $inputTest = $_POST['inputTitle'];
+        $log = date('d-m-Y H:i:s') . ' Film : ' . $inputTest . PHP_EOL;
+
+        if (file_exists($fichierLog)) {
+            file_put_contents($fichierLog, $log, FILE_APPEND);
+        } else {
+            file_put_contents($fichierLog, $log);
+        }
 
         $req = $db['SEARCH_FILM'] . '?api_key=' . $db['API_KEY'] . '&language=fr-FR' . '&query=' . $inputTest;
 
@@ -132,10 +141,18 @@ function filmController($twig, $db)
 
 function showController($twig, $db)
 {
+    $fichierLog = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'data.log';
     $show = [];
     $err = "";
     if (isset($_POST['Recherche'])) {
         $inputTest = $_POST['inputTitle'];
+        $log = date('d-m-Y H:i:s') . ' Série : ' . $inputTest . PHP_EOL;
+
+        if (file_exists($fichierLog)) {
+            file_put_contents($fichierLog, $log, FILE_APPEND);
+        } else {
+            file_put_contents($fichierLog, $log);
+        }
 
         $req = $db['SEARCH_SHOW'] . '?api_key=' . $db['API_KEY'] . '&language=fr-FR' . '&query=' . $inputTest;
 
@@ -234,10 +251,18 @@ function showController($twig, $db)
 
 function acteurController($twig, $db)
 {
+    $fichierLog = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'data.log';
     $acteur = [];
     $err = "";
     if (isset($_POST['Recherche'])) {
         $inputTest = $_POST['inputTitle'];
+        $log = date('d-m-Y H:i:s') . ' Acteur : ' . $inputTest . PHP_EOL;
+
+        if (file_exists($fichierLog)) {
+            file_put_contents($fichierLog, $log, FILE_APPEND);
+        } else {
+            file_put_contents($fichierLog, $log);
+        }
 
         $req = $db['SEARCH_ACTEUR'] . '?api_key=' . $db['API_KEY'] . '&language=fr-FR' . '&query=' . $inputTest;
 
@@ -285,4 +310,31 @@ function detailFilmController($twig, $db)
         }
     }
     echo $twig->render('detailFilm.html.twig', ['detail' => $dtl, 'err' => $err]);
+}
+
+function detailShowController($twig, $db)
+{
+    $dtl = [];
+    $err = "";
+    if (isset($_GET["id"])) {
+        $id = $_GET['id'];
+        $req = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
+
+        $client = new GuzzleHttp\Client();
+        $res = $client->request('GET', $req, [
+            'verify' => false,
+        ]);
+
+        $json = json_decode($res->getBody()->getContents(), true);
+
+        if ($json['original_name'] == null) {
+            $err = "404 Unfound";
+        } else {
+            foreach ($json as $d) {
+                array_push($dtl, $d);
+            }
+        }
+    }
+
+    echo $twig->render('detailShow.html.twig', ['detail' => $dtl, 'err' => $err]);
 }
