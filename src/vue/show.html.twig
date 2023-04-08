@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid text-center m-5">
+<div class="jumbotron jumbotron-fluid text-center m-5 ">
   <h1>Vous recherchez un show ?</h1>
   <p class="lead">Formulaire pour rechercher des Série par nom</p>
   <hr class="my-4"> 
@@ -68,11 +68,11 @@
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
 {% for s in show %}
 
-<div class="card" style="max-width: 20rem;">
+<div class="card card-hover" style="max-width: 20rem;">
   <img src="https://image.tmdb.org/t/p/w500/{{s.poster_path}}" class="card-img-top" alt="Un très bon show">
   <div class="card-body text-center">
     <h5 class="card-title fs-2">{{s.name}}</h5>
-    <p class="card-text">{{s.overview}}</p>
+    <p class="card-text text150">{{s.overview}}</p>
     <p class="card-text">Date de sortie : {{s.first_air_date|date("d/m/Y")}}</p>
     {% if s.vote_average < 3  %}
       <p class="card-text text-white border rounded bg-danger border-danger fs-2">Note : {{s.vote_average}}</p>

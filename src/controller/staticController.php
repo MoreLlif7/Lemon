@@ -1,4 +1,7 @@
 <?php
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 function accueilController($twig, $db)
 {
     $req = $db['BASE_URL'] . '/discover/movie?api_key=' . $db['API_KEY'] . '&language=fr-FR&sort_by=popularity.desc&page=1';
@@ -320,7 +323,6 @@ function detailFilmController($twig, $db)
 
 function detailShowController($twig, $db)
 {
-
     $err = "";
     if (isset($_GET["id"])) {
         $id = $_GET['id'];

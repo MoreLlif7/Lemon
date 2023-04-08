@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid text-center m-5">
+<div class="jumbotron jumbotron-fluid text-center m-5 ">
   <h1>Vous recherchez un film ?</h1>
-  <p class="lead">Formulaire pour rechercher des films par nom</p>
+  <p class="lead">Formulaire pour rechercher des Films par nom</p>
   <hr class="my-4"> 
 </div>
 <div class="container mb-5">
 <form action="index.php?page=film" method="post">
 <fieldset>
+
 <div class="form-group">
       <label for="inputTitle" class="form-label mt-4">Titre :</label>
       <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Entrer le nom d'un film">
@@ -23,7 +24,7 @@
 </div>
 {% if films|length != 0%}
 <div class="container mb-5">
-<form action="index.php?page=film" method="post">
+<form action="index.php?page=film" method="post" >
 <h3>Trier par :</h3>
 <div class="form-group d-flex gap-3">
     
@@ -66,11 +67,11 @@
 </div>
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
 {% for f in films %}
-<div class="card" style="max-width: 20rem;">
+<div class="card card-hover" style="max-width: 20rem;">
   <img src="https://image.tmdb.org/t/p/w500/{{f.poster_path}}" class="card-img-top" alt="Un très bon film">
   <div class="card-body text-center">
     <h5 class="card-title fs-2">{{f.title}}</h5>
-    <p class="card-text">{{f.overview}}</p>
+    <p class="card-text text150">{{f.overview}}</p>
     <p class="card-text">Date de sortie : {{f.release_date|date("d/m/Y")}}</p>
     {% if f.vote_average < 3  %}
       <p class="card-text text-white border rounded bg-danger border-danger fs-2">Note : {{f.vote_average}}</p>

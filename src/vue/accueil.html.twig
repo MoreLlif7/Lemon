@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid text-center m-5">
+<div class="jumbotron jumbotron-fluid text-center m-5 ">
   <h1>Bienvenue sur Lemon</h1>
-  <p class="lead">Vous pouvez ici chercher tout les films que vous souhaitez</p>
+  <p class="lead">Vous pouvez chercher ici  tout les films que vous souhaitez</p>
   <hr class="my-4">
   <a class="btn btn-primary btn-lg active" href="?page=film">Rechercher un film</a>  
-  <h1 class="mt-5">Le Top du moment :</h1>
+  
 </div>
-
+<h1 class="my-5 text-center">Le Top du moment :</h1>
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">
 
 {% for f in films %}

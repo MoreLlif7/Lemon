@@ -15,7 +15,11 @@
         <h3>Écrit par :</h3>
         {% for e in detail.created_by %}
         <h3>{{e['name']}}</h3>
+        {% if e.profile_path is not null %} 
         <img src="https://image.tmdb.org/t/p/original/{{e['profile_path']}}" alt="créateur" class="rounded " width="100">
+        {% else %}
+        <img src="https://via.placeholder.com/100?text=No+image" class="rounded" alt="Un très bon Réal" max-width="100px">
+        {% endif %}
         {% endfor %}
         </div>
         <h4>Date de Diffusion : {{ detail.first_air_date|date("d/m/Y")  }}</h4>
@@ -45,7 +49,11 @@
 <hr class="my-4"> 
         <div class="container ">
         <h2>Synopsys :</h2>
+        {% if detail.overview|length > 0 %}
         <p class="fs-3">{{detail.overview}}</p>
+        {% else %}
+        <p>Il n'y a pas de synopsys</p>
+        {% endif %}
         </div>
       </div>
        <div class="col-lg-6 col-md-6 col-sm-12 mx-auto">
@@ -73,7 +81,12 @@
         <div class="container d-flex justify-content-center align-items-baseline flex-wrap gap-3 ">
         {% for s in detail.seasons %}
         <div class="card" style="width: 8rem;">
-        <img class="card-img-top" src="https://image.tmdb.org/t/p/w200/{{s['poster_path']}}" alt="Card image cap">
+        {% if s.poster_path is not null %} 
+ <img class="card-img-top" src="https://image.tmdb.org/t/p/w200/{{s['poster_path']}}" alt="Card image cap">
+{% else %}
+<img src="https://via.placeholder.com/500?text=No+image" class="card-img-top" alt="Un très bon acteur">
+ {% endif %}
+        
           <div class="card-body">
           <h5 class="card-title">{{s['name']}}</h5>
             <p class="card-text">{{s['episode_count']}} épisodes</p>
