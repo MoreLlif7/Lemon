@@ -69,7 +69,12 @@
 {% for s in show %}
 
 <div class="card card-hover" style="max-width: 20rem;">
-  <img src="https://image.tmdb.org/t/p/w500/{{s.poster_path}}" class="card-img-top" alt="Un très bon show">
+{% if s.poster_path is not null %} 
+ <img src="https://image.tmdb.org/t/p/w500/{{s.poster_path}}" class="card-img-top" alt="Un très bon show">
+{% else %}
+<img src="https://via.placeholder.com/500?text=No+image" class="card-img-top" alt="Un très bon film">
+ {% endif %}
+  
   <div class="card-body text-center">
     <h5 class="card-title fs-2">{{s.name}}</h5>
     <p class="card-text text150">{{s.overview}}</p>

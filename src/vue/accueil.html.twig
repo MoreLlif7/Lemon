@@ -17,7 +17,12 @@
 
 {% for f in films %}
 <div class="card shadow card-hover" style="max-width: 20rem;">
-  <img src="https://image.tmdb.org/t/p/w500/{{f.poster_path}}" class="card-img-top" alt="Un très bon film">
+{% if f.poster_path is not null %} 
+ <img src="https://image.tmdb.org/t/p/w500/{{f.poster_path}}" class="card-img-top" alt="Un très bon film">
+{% else %}
+<img src="https://via.placeholder.com/500?text=No+image" class="card-img-top" alt="Un très bon film">
+ {% endif %}
+  
   <div class="card-body text-center">
     <h5 class="card-title fs-2">{{f.title}}</h5>
     <p class="card-text text150">{{f.overview}}</p>
