@@ -14,6 +14,8 @@ function accueilController($twig, $db)
         }
     }
     $genre = callAPI("genre", $db, null);
+
+
     echo $twig->render('accueil.html.twig', [
         'films' => $films,
         'genre' => $genre,
@@ -46,6 +48,10 @@ function filmController($twig, $db)
         $films = trieFilm($change);
     }
 
+    if (isset($json['status_code']) && $json['status_code'] == 34) {
+        $err = "404 Unfound";
+    }
+
 
     echo $twig->render('film.html.twig', ['films' => $films, 'error' => $err]);
 }
@@ -74,6 +80,10 @@ function showController($twig, $db)
         $show = trieShow($change);
     }
 
+    if (isset($json['status_code']) && $json['status_code'] == 34) {
+        $err = "404 Unfound";
+    }
+
     echo $twig->render('show.html.twig', ['show' => $show, 'error' => $err]);
 }
 
@@ -94,6 +104,9 @@ function acteurController($twig, $db)
         }
     }
 
+    if (isset($json['status_code']) && $json['status_code'] == 34) {
+        $err = "404 Unfound";
+    }
 
     echo $twig->render('acteur.html.twig', ['acteur' => $acteur, 'error' => $err]);
 }
@@ -105,18 +118,7 @@ function detailFilmController($twig, $db)
     $err = "";
     if (isset($_GET["id"])) {
         $id = htmlspecialchars($_GET['id']);
-        $req = $db['SEARCH_DETAIL_FILM'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
-        $reqV = $db['SEARCH_DETAIL_FILM'] . '/' . $id . '/videos' . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
-        $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $req, [
-            'verify' => false,
-        ]);
-        $resV = $client->request('GET', $reqV, [
-            'verify' => false,
-        ]);
-
-        $json = json_decode($res->getBody()->getContents(), true);
-        $jsonV = json_decode($resV->getBody()->getContents(), true);
+        $tabJSON = callAPIDTL('film', $db, $id);
 
         if (isset($json['status_code']) && $json['status_code'] == 34) {
             $err = "404 Unfound";
@@ -128,7 +130,7 @@ function detailFilmController($twig, $db)
     }
 
 
-    echo $twig->render('detailFilm.html.twig', ['detail' => $json, 'err' => $err, 'video' => $jsonV['results'][0]['key']]);
+    echo $twig->render('detailFilm.html.twig', ['detail' => $tabJSON[0], 'err' => $err, 'video' => $tabJSON[1]['results'][0]['key']]);
 }
 
 function detailShowController($twig, $db)
@@ -136,20 +138,7 @@ function detailShowController($twig, $db)
     $err = "";
     if (isset($_GET["id"])) {
         $id = htmlspecialchars($_GET['id']);
-        $req = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
-        $reqV = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '/videos' . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
-
-        $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $req, [
-            'verify' => false,
-        ]);
-        $resV = $client->request('GET', $reqV, [
-            'verify' => false,
-        ]);
-
-
-        $json = json_decode($res->getBody()->getContents(), true);
-        $jsonV = json_decode($resV->getBody()->getContents(), true);
+        $tabJSON = callAPIDTL('show', $db, $id);
 
         if (isset($json['status_code']) && $json['status_code'] == 34) {
             $err = "404 Unfound";
@@ -158,5 +147,5 @@ function detailShowController($twig, $db)
             $err = "404 Unfound";
         }
     }
-    echo $twig->render('detailShow.html.twig', ['detail' => $json, 'err' => $err, 'video' => $jsonV['results'][0]['key']]);
+    echo $twig->render('detailShow.html.twig', ['detail' => $tabJSON[0], 'err' => $err, 'video' => $tabJSON[1]['results'][0]['key']]);
 }
