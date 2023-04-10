@@ -10,7 +10,13 @@
   <p class="lead">Vous pouvez chercher ici  tout les films que vous souhaitez</p>
   <hr class="my-4">
   <a class="btn btn-primary btn-lg active" href="?page=film">Rechercher un film</a>  
-  
+</div>
+<h1 class="my-5 text-center">Genre de film :</h1>
+<div class="container d-flex justify-content-center align-items-center flex-wrap gap-2">
+
+{% for g in genre.genres %}
+<a class="btn btn-primary btn-lg active" href="index.php?genre={{g.id}}">{{g.name}}</a>  
+{% endfor %} 
 </div>
 <h1 class="my-5 text-center">Le Top du moment :</h1>
 <div class="contrainer-fluid d-flex flex-wrap justify-content-center align-items-baseline gap-5">

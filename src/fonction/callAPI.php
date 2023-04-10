@@ -15,6 +15,9 @@ function callAPI($api, $db, $search)
         case 'acteur':
             $req = $db['SEARCH_ACTEUR'] . '?api_key=' . $db['API_KEY'] . '&language=fr-FR' . '&query=' . $search;
             break;
+        case 'genre':
+            $req = $db['GENRE'] . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
+            break;
         default:
             $req = "";
             break;
@@ -36,4 +39,17 @@ function testVide($json)
         $bool = true;
     }
     return $bool;
+}
+
+function callAPIGenre($id, $db)
+{
+    $req  = $db['SEARCH_GENRE'] . '?api_key=' . $db['API_KEY'] . '&language=fr-FR&with_genres=' . $id;
+    $client = new GuzzleHttp\Client();
+    $res = $client->request('GET', $req, [
+        'verify' => false,
+    ]);
+
+
+    $json = json_decode($res->getBody()->getContents(), true);
+    return $json['results'];
 }

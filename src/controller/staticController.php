@@ -3,16 +3,20 @@
 
 function accueilController($twig, $db)
 {
-    $json = callAPI("base", $db, null);
     $films = [];
-
-
-    foreach ($json["results"] as $f) {
-        array_push($films, $f);
+    if (isset($_GET['genre'])) {
+        $id = htmlspecialchars($_GET['genre']);
+        $films = callAPIGenre($id, $db);
+    } else {
+        $json = callAPI("base", $db, null);
+        foreach ($json["results"] as $f) {
+            array_push($films, $f);
+        }
     }
-
+    $genre = callAPI("genre", $db, null);
     echo $twig->render('accueil.html.twig', [
         'films' => $films,
+        'genre' => $genre,
     ]);
 }
 
@@ -100,7 +104,7 @@ function detailFilmController($twig, $db)
 
     $err = "";
     if (isset($_GET["id"])) {
-        $id = $_GET['id'];
+        $id = htmlspecialchars($_GET['id']);
         $req = $db['SEARCH_DETAIL_FILM'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
         $reqV = $db['SEARCH_DETAIL_FILM'] . '/' . $id . '/videos' . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
         $client = new GuzzleHttp\Client();
@@ -131,7 +135,7 @@ function detailShowController($twig, $db)
 {
     $err = "";
     if (isset($_GET["id"])) {
-        $id = $_GET['id'];
+        $id = htmlspecialchars($_GET['id']);
         $req = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
         $reqV = $db['SEARCH_DETAIL_SHOW'] . '/' . $id . '/videos' . '?api_key=' . $db['API_KEY'] . '&language=fr-FR';
 
